@@ -10,34 +10,35 @@ import java.util.Objects;
 public class Mensalidade {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String mesReferencia;
 
     @Temporal(TemporalType.DATE)
     private Date dataVencimento;
-    private double valor;
-
-    @Enumerated(EnumType.STRING)
-    private StatusPagamento statusPagamento;
 
     @Temporal(TemporalType.DATE)
     private Date dataPagamento;
 
-    public Mensalidade() {}
+    private Double valor;
 
-    public Mensalidade(int id, String mesReferencia, Date dataVencimento, double valor, StatusPagamento statusPagamento, Date dataPagamento) {
+    @Enumerated(EnumType.STRING)
+    private StatusPagamento statusPagamento;
+
+    public Mensalidade() {
+    }
+
+    public Mensalidade(int id, String mesReferencia, Date dataVencimento, Double valor, StatusPagamento statusPagamento) {
         this.id = id;
         this.mesReferencia = mesReferencia;
         this.dataVencimento = dataVencimento;
         this.valor = valor;
         this.statusPagamento = statusPagamento;
-        this.dataPagamento = dataPagamento;
     }
 
-
-    public void registrarPagamento(Date data) {
-        this.dataPagamento = data;
+    public void registrarPagamento(Date dataPagamento) {
+        this.dataPagamento = dataPagamento;
         this.statusPagamento = StatusPagamento.PAGO;
     }
 
@@ -46,12 +47,57 @@ public class Mensalidade {
     }
 
     public boolean estaPaga() {
-        return statusPagamento == StatusPagamento.PAGO;
+        return StatusPagamento.PAGO.equals(this.statusPagamento);
     }
 
-    public boolean estaAtrasada() {
-        return statusPagamento == StatusPagamento.ATRASADO;
+    public int getId() {
+        return id;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getMesReferencia() {
+        return mesReferencia;
+    }
+
+    public void setMesReferencia(String mesReferencia) {
+        this.mesReferencia = mesReferencia;
+    }
+
+    public Date getDataVencimento() {
+        return dataVencimento;
+    }
+
+    public void setDataVencimento(Date dataVencimento) {
+        this.dataVencimento = dataVencimento;
+    }
+
+    public Date getDataPagamento() {
+        return dataPagamento;
+    }
+
+    public void setDataPagamento(Date dataPagamento) {
+        this.dataPagamento = dataPagamento;
+    }
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    public StatusPagamento getStatusPagamento() {
+        return statusPagamento;
+    }
+
+    public void setStatusPagamento(StatusPagamento statusPagamento) {
+        this.statusPagamento = statusPagamento;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

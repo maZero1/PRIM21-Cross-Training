@@ -25,16 +25,17 @@ public class Aluno {
     @Enumerated(EnumType.STRING)
     private StatusAluno status;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Mensalidade> mensalidades = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MatriculaHorario> matriculas = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReposicaoAula> reposicoes = new ArrayList<>();
 
-    public Aluno() {}
+    public Aluno() {
+    }
 
     public Aluno(int id, String nome, String telefone, String email, Date dataCadastro) {
         this.id = id;
@@ -64,10 +65,10 @@ public class Aluno {
                 .toList();
     }
 
-    public List<Object> obterHorarios() {
+    public List<Horario> obterHorarios() {
         return matriculas.stream()
                 .filter(MatriculaHorario::estaAtiva)
-                .map(m -> null)
+                .map(MatriculaHorario::getHorario)
                 .toList();
     }
 
@@ -75,6 +76,7 @@ public class Aluno {
         ReposicaoAula r = new ReposicaoAula();
         r.setDataOriginal(dataOriginal);
         r.setMotivo(motivo);
+        r.solicitar();
         reposicoes.add(r);
         return r;
     }
@@ -150,7 +152,6 @@ public class Aluno {
     public void setReposicoes(List<ReposicaoAula> reposicoes) {
         this.reposicoes = reposicoes;
     }
-
 
     @Override
     public boolean equals(Object o) {

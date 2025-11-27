@@ -10,17 +10,22 @@ import java.util.Objects;
 public class ReposicaoAula {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Temporal(TemporalType.DATE)
     private Date dataOriginal;
+
     @Temporal(TemporalType.DATE)
     private Date dataReposicao;
+
     private String motivo;
+
     @Enumerated(EnumType.STRING)
     private StatusReposicao status;
 
-    public ReposicaoAula() {}
+    public ReposicaoAula() {
+    }
 
     public ReposicaoAula(int id, Date dataOriginal, Date dataReposicao, String motivo, StatusReposicao status) {
         this.id = id;
@@ -30,12 +35,16 @@ public class ReposicaoAula {
         this.status = status;
     }
 
-    public void aprovar(Date dataReposicao) {
-        this.dataReposicao = dataReposicao;
+    public void solicitar() {
+        this.status = StatusReposicao.SOLICITADA;
+    }
+
+    public void aprovar() {
         this.status = StatusReposicao.APROVADA;
     }
 
-    public void registrarRealizacao() {
+    public void registrarRealizacao(Date dataReposicao) {
+        this.dataReposicao = dataReposicao;
         this.status = StatusReposicao.REALIZADA;
     }
 
@@ -44,31 +53,53 @@ public class ReposicaoAula {
         this.status = StatusReposicao.CANCELADA;
     }
 
-    public boolean estaAprovada() {
-        return status == StatusReposicao.APROVADA;
+    public int getId() {
+        return id;
     }
 
-    public boolean estaRealizada() {
-        return status == StatusReposicao.REALIZADA;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void solicitar() {
-        this.status = StatusReposicao.SOLICITADA;
+    public Date getDataOriginal() {
+        return dataOriginal;
     }
 
     public void setDataOriginal(Date dataOriginal) {
         this.dataOriginal = dataOriginal;
     }
 
+    public Date getDataReposicao() {
+        return dataReposicao;
+    }
+
+    public void setDataReposicao(Date dataReposicao) {
+        this.dataReposicao = dataReposicao;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
     public void setMotivo(String motivo) {
         this.motivo = motivo;
     }
+
+    public StatusReposicao getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusReposicao status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ReposicaoAula that)) return false;
         return id == that.id;
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(id);

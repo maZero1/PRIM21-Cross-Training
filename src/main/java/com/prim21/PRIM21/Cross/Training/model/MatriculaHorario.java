@@ -22,14 +22,18 @@ public class MatriculaHorario {
     @Enumerated(EnumType.STRING)
     private SituacaoMatricula situacao;
 
+    @ManyToOne
+    private Horario horario;
+
     public MatriculaHorario() {
     }
 
-    public MatriculaHorario(int id, Date dataInicio, Date dataFim, SituacaoMatricula situacao) {
+    public MatriculaHorario(int id, Date dataInicio, Date dataFim, SituacaoMatricula situacao, Horario horario) {
         this.id = id;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.situacao = situacao;
+        this.horario = horario;
     }
 
     public void ativar() {
@@ -40,45 +44,52 @@ public class MatriculaHorario {
         this.situacao = SituacaoMatricula.TRANCADA;
     }
 
-    public void encerrar(Date dataFim) {
-        this.dataFim = dataFim;
+    public void encerrar() {
         this.situacao = SituacaoMatricula.ENCERRADA;
     }
 
     public boolean estaAtiva() {
-        return situacao == SituacaoMatricula.ATIVA;
+        return this.situacao == SituacaoMatricula.ATIVA;
     }
 
     public int getId() {
         return id;
     }
 
-    public Date getDataInicio() {
-        return dataInicio;
-    }
-
-    public Date getDataFim() {
-        return dataFim;
-    }
-
-    public SituacaoMatricula getSituacao() {
-        return situacao;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Date getDataInicio() {
+        return dataInicio;
     }
 
     public void setDataInicio(Date dataInicio) {
         this.dataInicio = dataInicio;
     }
 
+    public Date getDataFim() {
+        return dataFim;
+    }
+
     public void setDataFim(Date dataFim) {
         this.dataFim = dataFim;
     }
 
+    public SituacaoMatricula getSituacao() {
+        return situacao;
+    }
+
     public void setSituacao(SituacaoMatricula situacao) {
         this.situacao = situacao;
+    }
+
+    public Horario getHorario() {
+        return horario;
+    }
+
+    public void setHorario(Horario horario) {
+        this.horario = horario;
     }
 
     @Override

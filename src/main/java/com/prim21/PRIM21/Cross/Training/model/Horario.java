@@ -1,6 +1,5 @@
 package com.prim21.PRIM21.Cross.Training.model;
 
-import com.prim21.PRIM21.Cross.Training.model.Enum.DiaSemana;
 import jakarta.persistence.*;
 
 import java.sql.Time;
@@ -13,16 +12,18 @@ public class Horario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Enumerated(EnumType.STRING)
-    private DiaSemana diaSemana;
+    private String diaSemana;
+
     private Time horaInicio;
+
     private Time horaFim;
+
     private String descricao;
 
     public Horario() {
     }
 
-    public Horario(int id, DiaSemana diaSemana, Time horaInicio, Time horaFim, String descricao) {
+    public Horario(int id, String diaSemana, Time horaInicio, Time horaFim, String descricao) {
         this.id = id;
         this.diaSemana = diaSemana;
         this.horaInicio = horaInicio;
@@ -30,15 +31,46 @@ public class Horario {
         this.descricao = descricao;
     }
 
-    public void atualizarHorario(DiaSemana diaSemana, Time horaInicio, Time horaFim) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDiaSemana() {
+        return diaSemana;
+    }
+
+    public void setDiaSemana(String diaSemana) {
         this.diaSemana = diaSemana;
+    }
+
+    public Time getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(Time horaInicio) {
         this.horaInicio = horaInicio;
+    }
+
+    public Time getHoraFim() {
+        return horaFim;
+    }
+
+    public void setHoraFim(Time horaFim) {
         this.horaFim = horaFim;
     }
 
-    public boolean contemHorario(Time hora) {
-        return !hora.before(horaInicio) && !hora.after(horaFim);
+    public String getDescricao() {
+        return descricao;
     }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

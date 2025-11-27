@@ -1,7 +1,6 @@
 package com.prim21.PRIM21.Cross.Training.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +14,8 @@ public class Administrador {
     private List<Aluno> alunos = new ArrayList<>();
     private List<Horario> horarios = new ArrayList<>();
 
-    public Administrador() {}
+    public Administrador() {
+    }
 
     public Administrador(int id, String nome, String email, String senha) {
         this.id = id;
@@ -24,46 +24,52 @@ public class Administrador {
         this.senha = senha;
     }
 
-    public void cadastrarAluno(Aluno aluno) {
-        aluno.marcarComoAtivo();
-        alunos.add(aluno);
+    public int getId() {
+        return id;
     }
 
-    public void atualizarAluno(Aluno dadosNovos) {
-        for (Aluno aluno : alunos) {
-            if (aluno.getId() == dadosNovos.getId()) {
-                aluno.atualizarDados(
-                        dadosNovos.getNome(),
-                        dadosNovos.getTelefone(),
-                        dadosNovos.getEmail()
-                );
-                return;
-            }
-        }
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void registrarPagamento(Mensalidade mensalidade, Date data) {
-        mensalidade.registrarPagamento(data);
+    public String getNome() {
+        return nome;
     }
 
-    public void criarHorario(Horario horario) {
-        horarios.add(horario);
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public MatriculaHorario agendarAlunoEmHorario(Aluno aluno, Horario horario) {
-        MatriculaHorario matricula = new MatriculaHorario();
-        aluno.getMatriculas().add(matricula);
-        return matricula;
+    public String getEmail() {
+        return email;
     }
 
-    public void registrarReposicao(Aluno aluno, ReposicaoAula reposicao) {
-        aluno.getReposicoes().add(reposicao);
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public List<Aluno> gerarRelatorioInadimplentes() {
-        return alunos.stream()
-                .filter(a -> !a.obterMensalidadesEmAberto().isEmpty())
-                .toList();
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
+
+    public List<Horario> getHorarios() {
+        return horarios;
+    }
+
+    public void setHorarios(List<Horario> horarios) {
+        this.horarios = horarios;
     }
 
     @Override
