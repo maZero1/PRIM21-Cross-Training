@@ -2,36 +2,34 @@ package com.prim21.PRIM21.Cross.Training.service;
 
 import com.prim21.PRIM21.Cross.Training.model.Mensalidade;
 import com.prim21.PRIM21.Cross.Training.repository.MensalidadeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class MensalidadeService {
 
-    private final MensalidadeRepository repository;
+    @Autowired
+    private MensalidadeRepository mensalidadeRepository;
 
-    public MensalidadeService(MensalidadeRepository repository) {
-        this.repository = repository;
-    }
-
-    public Mensalidade criar(Mensalidade m) {
-        return repository.save(m);
+    public Mensalidade salvar(Mensalidade mensalidade) {
+        return mensalidadeRepository.save(mensalidade);
     }
 
     public List<Mensalidade> listar() {
-        return repository.findAll();
+        return mensalidadeRepository.findAll();
     }
 
-    public Mensalidade buscar(int id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Mensalidade não encontrada"));
+    public List<Mensalidade> listarPorAluno(Long alunoId) {
+        return mensalidadeRepository.findByAlunoId(alunoId);
     }
 
-    public Mensalidade registrarPagamento(int id) {
-        Mensalidade m = buscar(id);
-        m.registrarPagamento(new Date());
-        return repository.save(m);
+    public Mensalidade buscar(Long id) {
+        return mensalidadeRepository.findById(id).orElse(null);
+    }
+
+    public void deletar(Long id) {
+        mensalidadeRepository.deleteById(id);
     }
 }
