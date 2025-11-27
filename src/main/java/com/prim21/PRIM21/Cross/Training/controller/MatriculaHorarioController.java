@@ -7,37 +7,37 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/matriculas")
+@RequestMapping("/api/matriculas")
 public class MatriculaHorarioController {
 
-    private final MatriculaHorarioService matriculaHorarioService;
+    private final MatriculaHorarioService service;
 
-    public MatriculaHorarioController(MatriculaHorarioService matriculaHorarioService) {
-        this.matriculaHorarioService = matriculaHorarioService;
+    public MatriculaHorarioController(MatriculaHorarioService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public List<MatriculaHorario> listar() {
+        return service.listar();
     }
 
     @GetMapping("/{id}")
     public MatriculaHorario buscar(@PathVariable int id) {
-        return matriculaHorarioService.buscar(id);
-    }
-
-    @GetMapping("/listar")
-    public List<MatriculaHorario> listar() {
-        return matriculaHorarioService.listar();
+        return service.buscar(id);
     }
 
     @PutMapping("/{id}/ativar")
     public MatriculaHorario ativar(@PathVariable int id) {
-        return matriculaHorarioService.ativar(id);
+        return service.ativar(id);
     }
 
     @PutMapping("/{id}/trancar")
     public MatriculaHorario trancar(@PathVariable int id) {
-        return matriculaHorarioService.trancar(id);
+        return service.trancar(id);
     }
 
     @PutMapping("/{id}/encerrar")
     public MatriculaHorario encerrar(@PathVariable int id) {
-        return matriculaHorarioService.encerrar(id);
+        return service.encerrar(id);
     }
 }

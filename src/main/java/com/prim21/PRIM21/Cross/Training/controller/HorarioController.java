@@ -7,37 +7,37 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/horarios")
+@RequestMapping("/api/horarios")
 public class HorarioController {
 
-    private final HorarioService horarioService;
+    private final HorarioService service;
 
-    public HorarioController(HorarioService horarioService) {
-        this.horarioService = horarioService;
+    public HorarioController(HorarioService service) {
+        this.service = service;
     }
 
-    @PostMapping("/criar")
+    @PostMapping
     public Horario criar(@RequestBody Horario horario) {
-        return horarioService.criar(horario);
+        return service.criar(horario);
     }
 
-    @GetMapping("/listar")
+    @GetMapping
     public List<Horario> listar() {
-        return horarioService.listar();
+        return service.listar();
     }
 
     @GetMapping("/{id}")
     public Horario buscar(@PathVariable int id) {
-        return horarioService.buscarPorId(id);
+        return service.buscarPorId(id);
     }
 
-    @PutMapping("/atualizar")
-    public Horario atualizar(@RequestBody Horario horario) {
-        return horarioService.atualizar(horario);
+    @PutMapping("/{id}")
+    public Horario atualizar(@PathVariable int id, @RequestBody Horario dados) {
+        return service.atualizar(id, dados);
     }
 
     @DeleteMapping("/{id}")
     public void excluir(@PathVariable int id) {
-        horarioService.excluir(id);
+        service.excluir(id);
     }
 }

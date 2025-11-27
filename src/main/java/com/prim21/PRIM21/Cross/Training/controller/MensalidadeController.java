@@ -4,42 +4,35 @@ import com.prim21.PRIM21.Cross.Training.model.Mensalidade;
 import com.prim21.PRIM21.Cross.Training.service.MensalidadeService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/mensalidades")
+@RequestMapping("/api/mensalidades")
 public class MensalidadeController {
 
-    private final MensalidadeService mensalidadeService;
+    private final MensalidadeService service;
 
-    public MensalidadeController(MensalidadeService mensalidadeService) {
-        this.mensalidadeService = mensalidadeService;
+    public MensalidadeController(MensalidadeService service) {
+        this.service = service;
     }
 
-    @PostMapping("/criar")
+    @PostMapping
     public Mensalidade criar(@RequestBody Mensalidade mensalidade) {
-        return mensalidadeService.criar(mensalidade);
+        return service.criar(mensalidade);
     }
 
-    @GetMapping("/listar")
+    @GetMapping
     public List<Mensalidade> listar() {
-        return mensalidadeService.listarTodas();
+        return service.listar();
     }
 
     @GetMapping("/{id}")
     public Mensalidade buscar(@PathVariable int id) {
-        return mensalidadeService.buscarPorId(id);
+        return service.buscar(id);
     }
 
     @PutMapping("/{id}/pagar")
-    public Mensalidade pagar(@PathVariable int id,
-                             @RequestParam Date dataPagamento) {
-        return mensalidadeService.registrarPagamento(id, dataPagamento);
-    }
-
-    @PutMapping("/{id}/atrasada")
-    public Mensalidade marcarAtrasada(@PathVariable int id) {
-        return mensalidadeService.marcarComoAtrasada(id);
+    public Mensalidade registrarPagamento(@PathVariable int id) {
+        return service.registrarPagamento(id);
     }
 }
