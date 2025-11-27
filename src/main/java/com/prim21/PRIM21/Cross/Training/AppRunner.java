@@ -1,9 +1,8 @@
-package com.prim21.PRIM21.Cross.Training;
+/**package com.prim21.PRIM21.Cross.Training;
 
 import com.prim21.PRIM21.Cross.Training.model.Aluno;
 import com.prim21.PRIM21.Cross.Training.model.Horario;
 import com.prim21.PRIM21.Cross.Training.model.Enum.DiaSemana;
-import com.prim21.PRIM21.Cross.Training.model.Enum.StatusAluno;
 import com.prim21.PRIM21.Cross.Training.repository.AlunoRepository;
 import com.prim21.PRIM21.Cross.Training.repository.HorarioRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -25,18 +24,24 @@ public class AppRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Aluno aluno = new Aluno(100, "Aluno AppRunner", "999999999", "apprunner@gmail.com", new Date());
+        // CORREÇÃO: Usando o construtor vazio ou passando 0 no ID.
+        // O ideal é não passar ID nenhum e deixar o banco decidir.
+        Aluno aluno = new Aluno();
+        aluno.setNome("Aluno AppRunner");
+        aluno.setTelefone("999999999");
+        aluno.setEmail("apprunner@gmail.com");
+        aluno.setDataCadastro(new Date());
+
         aluno.marcarComoAtivo();
+
+        // Agora o save() vai perceber que o ID é novo e fará um INSERT
         aluno = alunoRepository.save(aluno);
-        System.out.println("Aluno salvo com ID: " + aluno.getId());
+
+        System.out.println("Aluno salvo com ID gerado: " + aluno.getId());
 
         System.out.println("Lista de alunos:");
         alunoRepository.findAll()
                 .forEach(a -> System.out.println(a.getId() + " - " + a.getNome()));
-
-        alunoRepository.findById(aluno.getId()).ifPresent(
-                a -> System.out.println("Aluno encontrado por ID: " + a.getNome())
-        );
 
         Horario horario = new Horario();
         horario.setDiaSemana(DiaSemana.SEGUNDA);
@@ -47,4 +52,4 @@ public class AppRunner implements CommandLineRunner {
         horario = horarioRepository.save(horario);
         System.out.println("Horario salvo com ID: " + horario.getId());
     }
-}
+}**/

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/css/styles.css">
+
+    <title>Admin - Dashboard | PRIM 21</title>
+
+    <style>
+        body {
+            background: #050505;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="text-white min-h-screen flex">
+
+<aside class="w-64 bg-neutral-950 border-r border-neutral-800 flex flex-col">
+    <div class="flex items-center gap-3 px-5 py-4 border-b border-neutral-800">
+        <img src="./assets/img/prim21-logo.png" class="w-10">
+        <div>
+            <p class="text-sm text-gray-400">Painel Administrativo</p>
+            <h1 class="text-lg font-bold text-orange-400">PRIM 21</h1>
+        </div>
+    </div>
+
+    <nav class="flex-1 px-4 py-4 space-y-1 text-sm">
+        <button class="w-full text-left px-3 py-2 rounded-lg bg-neutral-800 text-orange-300 mb-1">
+            Dashboard
+        </button>
+
+        <a href="#" class="block px-3 py-2 rounded-lg hover:bg-neutral-800 transition-fast">
+            Cadastrar aluno
+        </a>
+        <a href="#" class="block px-3 py-2 rounded-lg hover:bg-neutral-800 transition-fast">
+            Atualizar dados do aluno
+        </a>
+        <a href="#" class="block px-3 py-2 rounded-lg hover:bg-neutral-800 transition-fast">
+            Controlar vencimentos
+        </a>
+        <a href="#" class="block px-3 py-2 rounded-lg hover:bg-neutral-800 transition-fast">
+            Gerenciar agenda/horários
+        </a>
+        <a href="#" class="block px-3 py-2 rounded-lg hover:bg-neutral-800 transition-fast">
+            Manter reposição de aula
+        </a>
+        <a href="#" class="block px-3 py-2 rounded-lg hover:bg-neutral-800 transition-fast">
+            Visualizar horários
+        </a>
+    </nav>
+
+    <div class="px-4 py-4 border-t border-neutral-800">
+        <button onclick="logout()"
+                class="w-full py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-semibold">
+            Sair
+        </button>
+    </div>
+</aside>
+
+<main class="flex-1 p-8 fade-in">
+
+    <h2 class="title-main mb-2">Dashboard</h2>
+    <p class="text-soft mb-8">
+        Visão geral das principais operações do box.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Card: Alunos -->
+        <div class="card-hover treino-card shadow-prim">
+            <h3 class="section-title">Alunos</h3>
+            <p class="text-soft mb-3">
+                Gerencie cadastro e atualização dos alunos.
+            </p>
+            <button class="btn-orange px-4 py-2 rounded-lg text-sm"
+                    onclick="alert('Aqui vamos abrir a tela de gerenciamento de alunos (future).')">
+                Gerenciar alunos
+            </button>
+        </div>
+
+        <!-- Card: Horários -->
+        <div class="card-hover treino-card">
+            <h3 class="section-title">Agenda / Horários</h3>
+            <p class="text-soft mb-3">
+                Organize turmas, horários e capacidade das aulas.
+            </p>
+            <button class="btn-orange px-4 py-2 rounded-lg text-sm"
+                    onclick="alert('Aqui vamos abrir a tela de horários (future).')">
+                Gerenciar horários
+            </button>
+        </div>
+
+        <!-- Card: Vencimentos -->
+        <div class="card-hover treino-card">
+            <h3 class="section-title">Vencimentos</h3>
+            <p class="text-soft mb-3">
+                Acompanhe mensalidades próximas do vencimento.
+            </p>
+            <button class="btn-orange px-4 py-2 rounded-lg text-sm"
+                    onclick="alert('Aqui vamos abrir a tela de vencimentos (future).')">
+                Ver vencimentos
+            </button>
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+        <!-- Card: Reposição -->
+        <div class="card-hover treino-card">
+            <h3 class="section-title">Reposição de Aulas</h3>
+            <p class="text-soft">
+                Registre e acompanhe reposições de cada aluno.
+            </p>
+        </div>
+
+        <div class="card-hover treino-card">
+            <h3 class="section-title">Resumo rápido</h3>
+            <p class="text-soft text-sm">
+                Aqui futuramente podemos mostrar cards com:
+                total de alunos ativos, vencimentos do dia, reposições pendentes, etc.
+            </p>
+        </div>
+    </div>
+</main>
+
+<script src="./js/auth.js"></script>
+</body>
+</html>

@@ -21,12 +21,29 @@
 
 <div class="w-full max-w-md bg-neutral-900 border border-neutral-800 rounded-2xl p-10 shadow-prim">
 
-    <!-- LOGO -->
+    <!-- LOGO / TÍTULO -->
     <div class="flex flex-col items-center mb-8">
         <img src="./assets/img/prim21-logo.png" class="w-24 mb-4">
         <h2 class="text-2xl font-bold text-orange-400 tracking-wide">
             Acesso à Plataforma
         </h2>
+        <p class="text-gray-400 text-sm mt-1 text-center">
+            Selecione o tipo de acesso e entre com suas credenciais.
+        </p>
+    </div>
+
+    <!-- TIPO DE ACESSO -->
+    <div class="flex mb-6 bg-neutral-800 rounded-xl p-1">
+        <button id="btn-admin"
+                class="w-1/2 py-2 rounded-lg text-sm font-semibold bg-orange-500 transition-fast"
+                onclick="selecionarTipo('ADMIN')">
+            Administrador
+        </button>
+        <button id="btn-aluno"
+                class="w-1/2 py-2 rounded-lg text-sm font-semibold text-gray-300 transition-fast"
+                onclick="selecionarTipo('ALUNO')">
+            Aluno
+        </button>
     </div>
 
     <!-- CAMPOS -->
@@ -52,12 +69,11 @@
 
         <p id="error" class="text-red-400 text-center mt-2 hidden"></p>
     </div>
-    <div class="text-center mt-8">
-        <p class="text-gray-400 mb-2">Ainda não possui acesso?</p>
 
-        <a href="#" class="text-orange-400 hover:text-orange-300 font-semibold transition-fast">
-            Criar primeiro acesso →
-        </a>
+    <!-- INFO -->
+    <div class="text-center mt-8 text-xs text-gray-500">
+        <p>Acesso de administrador: gerenciamento de alunos, horários e vencimentos.</p>
+        <p>Acesso de aluno: visualização de horários e reposições.</p>
     </div>
 
 </div>

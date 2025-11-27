@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <title>Reposição de Aula | PRIM 21</title>
+
+    <style>
+        body {
+            background: #050505;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .status-pendente { color: #fbbf24; font-weight: 600; }
+        .status-feita { color: #4ade80; font-weight: 600; }
+    </style>
+</head>
+
+<body class="text-white min-h-screen flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 bg-neutral-950 border-r border-neutral-800 flex flex-col">
+    <div class="flex items-center gap-3 px-5 py-4 border-b border-neutral-800">
+        <img src="../assets/img/prim21-logo.png" class="w-10">
+        <div>
+            <p class="text-xs text-gray-400">Administração</p>
+            <h1 class="text-lg font-bold text-orange-400">PRIM 21</h1>
+        </div>
+    </div>
+
+    <nav class="flex-1 px-4 py-4 space-y-1 text-sm">
+        <a href="../admin-dashboard.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Dashboard</a>
+        <a href="./cadastrar-aluno.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Cadastrar aluno</a>
+        <a href="./atualizar-aluno.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Atualizar aluno</a>
+        <a href="./horarios.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Agenda / Horários</a>
+        <a href="./vencimentos.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Vencimentos</a>
+        <button class="w-full text-left px-3 py-2 rounded-lg bg-neutral-800 text-orange-300">Reposição de aula</button>
+    </nav>
+
+    <div class="px-4 py-4 border-t border-neutral-800">
+        <button onclick="logout()" class="w-full py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm">
+            Sair
+        </button>
+    </div>
+</aside>
+
+<!-- CONTEÚDO -->
+<main class="flex-1 p-10 fade-in max-w-6xl mx-auto">
+
+    <h2 class="title-main mb-6">Reposição de aula</h2>
+
+    <!-- FILTROS -->
+    <div class="flex gap-4 mb-6">
+        <button onclick="filtrar('todos')" class="px-4 py-2 bg-neutral-800 rounded-lg hover:bg-neutral-700">Todas</button>
+        <button onclick="filtrar('pendente')" class="px-4 py-2 bg-yellow-600 rounded-lg hover:bg-yellow-500">Pendentes</button>
+        <button onclick="filtrar('feita')" class="px-4 py-2 bg-green-600 rounded-lg hover:bg-green-500">Concluídas</button>
+    </div>
+
+    <!-- REGISTRAR REPOSIÇÃO -->
+    <div class="treino-card shadow-prim p-6 mb-10">
+        <h3 class="section-title mb-4">Registrar nova reposição</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+                <label class="text-sm text-soft">Aluno</label>
+                <select id="aluno-id" class="input-base">
+                    <option value="">Selecione</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="text-sm text-soft">Data da reposição</label>
+                <input id="data-reposicao" type="date" class="input-base">
+            </div>
+
+            <div>
+                <label class="text-sm text-soft">Motivo</label>
+                <input id="motivo" class="input-base" placeholder="Ex: Falta justificada">
+            </div>
+        </div>
+
+        <button onclick="registrarReposicao()" class="btn-orange px-6 py-3 rounded-lg mt-6">
+            Registrar reposição
+        </button>
+
+        <p id="msg" class="mt-4 hidden"></p>
+    </div>
+
+    <!-- TABELA -->
+    <div class="treino-card shadow-prim overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-neutral-800 text-gray-400 text-left">
+            <tr>
+                <th class="p-3">Aluno</th>
+                <th class="p-3">Data</th>
+                <th class="p-3">Motivo</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Ação</th>
+            </tr>
+            </thead>
+            <tbody id="lista-reposicoes" class="text-white"></tbody>
+        </table>
+    </div>
+
+</main>
+
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+
+<script>
+    let reposicoesOriginais = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+        carregarAlunos();
+        carregarReposicoes();
+    });
+
+    function carregarAlunos() {
+        apiGet("/alunos", true).then(lista => {
+            const select = document.getElementById("aluno-id");
+            lista.forEach(a => {
+                select.innerHTML += `<option value="${a.id}">${a.nome}</option>`;
+            });
+        });
+    }
+
+    function carregarReposicoes() {
+        apiGet("/reposicoes", true).then(lista => {
+            reposicoesOriginais = lista;
+            renderTabela(lista);
+        });
+    }
+
+    function filtrar(tipo) {
+        if (tipo === "todos") return renderTabela(reposicoesOriginais);
+
+        const filtradas = reposicoesOriginais.filter(r =>
+            tipo === "pendente"
+                ? !r.feita
+                : r.feita
+        );
+
+        renderTabela(filtradas);
+    }
+
+    function renderTabela(lista) {
+        const tbody = document.getElementById("lista-reposicoes");
+        tbody.innerHTML = "";
+
+        lista.forEach(r => {
+            const status = r.feita
+                ? "<span class='status-feita'>Concluída</span>"
+                : "<span class='status-pendente'>Pendente</span>";
+
+            tbody.innerHTML += `
+                <tr class="border-t border-neutral-800">
+                    <td class="p-3">${r.aluno.nome}</td>
+                    <td class="p-3">${formatarData(r.data)}</td>
+                    <td class="p-3">${r.motivo}</td>
+                    <td class="p-3">${status}</td>
+                    <td class="p-3">
+                        ${
+                            !r.feita
+                            ? `<button onclick="concluir(${r.id})" class="btn-orange text-xs px-3 py-1 rounded-lg">Marcar como feita</button>`
+                            : ""
+                        }
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function registrarReposicao() {
+        const body = {
+            alunoId: document.getElementById("aluno-id").value,
+            data: document.getElementById("data-reposicao").value,
+            motivo: document.getElementById("motivo").value
+        };
+
+        apiPost("/reposicoes", body, true).then(r => {
+            const msg = document.getElementById("msg");
+            msg.classList.remove("hidden");
+
+            if (r.sucesso) {
+                msg.className = "text-green-400";
+                msg.textContent = "Reposição registrada!";
+                carregarReposicoes();
+            } else {
+                msg.className = "text-red-400";
+                msg.textContent = r.mensagem || "Erro ao registrar.";
+            }
+        });
+    }
+
+    function concluir(id) {
+        apiPost(`/reposicoes/${id}/concluir`, {}, true).then(() => {
+            carregarReposicoes();
+        });
+    }
+
+    function formatarData(d) {
+        return new Date(d).toLocaleDateString("pt-BR");
+    }
+</script>
+
+</body>
+</html>

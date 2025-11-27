@@ -18,10 +18,6 @@ public class ReposicaoAulaController {
         this.reposicaoService = reposicaoService;
     }
 
-    // -------------------------
-    // 1) Solicitar reposição
-    // -------------------------
-
     @PostMapping("/solicitar")
     public ResponseEntity<ReposicaoAula> solicitarReposicao(
             @RequestParam Date dataOriginal,
@@ -31,10 +27,6 @@ public class ReposicaoAulaController {
         return ResponseEntity.ok(r);
     }
 
-    // -------------------------
-    // 2) Aprovar reposição
-    // -------------------------
-
     @PutMapping("/{id}/aprovar")
     public ResponseEntity<ReposicaoAula> aprovarReposicao(
             @PathVariable int id,
@@ -43,11 +35,6 @@ public class ReposicaoAulaController {
         ReposicaoAula r = reposicaoService.aprovar(id, novaData);
         return ResponseEntity.ok(r);
     }
-
-    // -------------------------
-    // 3) Registrar realização
-    // -------------------------
-
     @PutMapping("/{id}/realizar")
     public ResponseEntity<ReposicaoAula> registrarRealizacao(
             @PathVariable int id
@@ -55,10 +42,6 @@ public class ReposicaoAulaController {
         ReposicaoAula r = reposicaoService.registrarRealizacao(id);
         return ResponseEntity.ok(r);
     }
-
-    // -------------------------
-    // 4) Cancelar reposição
-    // -------------------------
 
     @PutMapping("/{id}/cancelar")
     public ResponseEntity<ReposicaoAula> cancelarReposicao(
@@ -69,18 +52,10 @@ public class ReposicaoAulaController {
         return ResponseEntity.ok(r);
     }
 
-    // -------------------------
-    // 5) Listar todas
-    // -------------------------
-
     @GetMapping
     public ResponseEntity<List<ReposicaoAula>> listarTodas() {
         return ResponseEntity.ok(reposicaoService.listarTodos());
     }
-
-    // -------------------------
-    // 6) Listar somente solicitadas
-    // -------------------------
 
     @GetMapping("/solicitadas")
     public ResponseEntity<List<ReposicaoAula>> listarSolicitadas() {

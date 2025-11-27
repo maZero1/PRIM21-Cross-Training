@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <title>Visualizar Horários | PRIM 21</title>
+
+    <style>
+        body {
+            background: #050505;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="text-white min-h-screen flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 bg-neutral-950 border-r border-neutral-800 flex flex-col">
+    <div class="flex items-center gap-3 px-5 py-4 border-b border-neutral-800">
+        <img src="../assets/img/prim21-logo.png" class="w-10">
+        <div>
+            <p class="text-xs text-gray-400">Administração</p>
+            <h1 class="text-lg font-bold text-orange-400">PRIM 21</h1>
+        </div>
+    </div>
+
+    <nav class="flex-1 px-4 py-4 space-y-1 text-sm">
+        <a href="../admin-dashboard.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Dashboard</a>
+        <a href="./cadastrar-aluno.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Cadastrar aluno</a>
+        <a href="./atualizar-aluno.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Atualizar aluno</a>
+        <a href="./horarios.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Agenda / Horários</a>
+        <a href="./vencimentos.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Vencimentos</a>
+        <a href="./reposicao.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Reposição de aula</a>
+        <button class="w-full text-left px-3 py-2 rounded-lg bg-neutral-800 text-orange-300">Visualizar horários</button>
+    </nav>
+
+    <div class="px-4 py-4 border-t border-neutral-800">
+        <button onclick="logout()" class="w-full py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm">
+            Sair
+        </button>
+    </div>
+</aside>
+
+<!-- CONTEÚDO -->
+<main class="flex-1 p-10 fade-in max-w-5xl mx-auto">
+
+    <h2 class="title-main mb-6">Visualizar horários</h2>
+
+    <!-- ÁREA LISTAGEM -->
+    <div id="lista-horarios" class="space-y-4"></div>
+
+</main>
+
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", carregarHorarios);
+
+    function carregarHorarios() {
+        apiGet("/horarios", true).then(horarios => {
+            const container = document.getElementById("lista-horarios");
+            container.innerHTML = "";
+
+            horarios.forEach(h => {
+                container.innerHTML += criarCardHorario(h);
+            });
+        });
+    }
+
+    function criarCardHorario(h) {
+        return `
+            <div class="treino-card shadow-prim">
+                <button onclick="toggle(${h.id})"
+                        class="w-full text-left flex justify-between items-center">
+                    <div>
+                        <h3 class="text-lg font-bold text-orange-400">${h.hora}</h3>
+                        <p class="text-sm text-gray-400">Capacidade: ${h.capacidade}</p>
+                    </div>
+
+                    <span id="icon-${h.id}" class="text-gray-400 text-xl">▼</span>
+                </button>
+
+                <div id="conteudo-${h.id}" class="hidden mt-4 border-t border-neutral-800 pt-4">
+                    <p class="text-soft mb-2">Alunos deste horário:</p>
+
+                    <div id="alunos-${h.id}" class="space-y-1 text-sm">
+                        Carregando...
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function toggle(id) {
+        const box = document.getElementById(`conteudo-${id}`);
+        const icon = document.getElementById(`icon-${id}`);
+
+        const aberto = !box.classList.contains("hidden");
+
+        if (aberto) {
+            box.classList.add("hidden");
+            icon.textContent = "▼";
+        } else {
+            box.classList.remove("hidden");
+            icon.textContent = "▲";
+            carregarAlunosDoHorario(id);
+        }
+    }
+
+    function carregarAlunosDoHorario(id) {
+        apiGet(`/horarios/${id}/alunos`, true).then(lista => {
+            const area = document.getElementById(`alunos-${id}`);
+            area.innerHTML = "";
+
+            if (lista.length === 0) {
+                area.innerHTML = `<p class="text-gray-500">Nenhum aluno neste horário.</p>`;
+                return;
+            }
+
+            lista.forEach(a => {
+                area.innerHTML += `<p>${a.nome}</p>`;
+            });
+        });
+    }
+</script>
+
+</body>
+</html>

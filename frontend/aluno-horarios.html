@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/css/styles.css">
+
+    <title>Meus Horários | PRIM 21</title>
+
+    <style>
+        body {
+            background: #050505;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="text-white min-h-screen p-6 fade-in">
+
+<header class="flex justify-between items-center mb-6">
+    <div class="flex items-center gap-3">
+        <img src="./assets/img/prim21-logo.png" class="w-10">
+        <div>
+            <p class="text-xs text-gray-400">Área do aluno</p>
+            <h1 class="text-lg font-bold text-orange-400">PRIM 21</h1>
+        </div>
+    </div>
+
+    <button onclick="logout()"
+            class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-semibold">
+        Sair
+    </button>
+</header>
+
+<main class="max-w-3xl mx-auto">
+    <h2 class="title-main mb-2">Meus horários</h2>
+    <p class="text-soft mb-6">
+        Veja abaixo seus horários de treino e reposições disponíveis.
+    </p>
+
+    <section class="treino-card shadow-prim mb-6">
+        <h3 class="section-title">Horários de treino</h3>
+        <div id="lista-horarios" class="space-y-3 text-soft text-sm">
+            <p>Carregando seus horários...</p>
+        </div>
+    </section>
+
+    <section class="treino-card">
+        <h3 class="section-title">Reposições de aula</h3>
+        <div id="lista-reposicoes" class="space-y-3 text-soft text-sm">
+            <p>Carregando reposições...</p>
+        </div>
+    </section>
+</main>
+
+<script src="./js/api.js"></script>
+<script src="./js/auth.js"></script>
+</body>
+</html>

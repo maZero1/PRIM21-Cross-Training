@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <title>Atualizar Aluno | PRIM 21</title>
+
+    <style>
+        body {
+            background: #050505;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="text-white min-h-screen flex">
+
+<!-- SIDEBAR -->
+<aside class="w-64 bg-neutral-950 border-r border-neutral-800 flex flex-col">
+    <div class="flex items-center gap-3 px-5 py-4 border-b border-neutral-800">
+        <img src="../assets/img/prim21-logo.png" class="w-10">
+        <div>
+            <p class="text-xs text-gray-400">Administração</p>
+            <h1 class="text-lg font-bold text-orange-400">PRIM 21</h1>
+        </div>
+    </div>
+
+    <nav class="flex-1 px-4 py-4 space-y-1 text-sm">
+        <a href="../admin-dashboard.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Dashboard</a>
+        <a href="./cadastrar-aluno.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Cadastrar aluno</a>
+        <button class="w-full text-left px-3 py-2 rounded-lg bg-neutral-800 text-orange-300">Atualizar aluno</button>
+        <a href="./horarios.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Agenda / Horários</a>
+        <a href="./vencimentos.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Vencimentos</a>
+        <a href="./reposicao.html" class="block px-3 py-2 rounded-lg hover:bg-neutral-800">Reposição de aula</a>
+    </nav>
+
+    <div class="px-4 py-4 border-t border-neutral-800">
+        <button onclick="logout()" class="w-full py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm">
+            Sair
+        </button>
+    </div>
+</aside>
+
+<!-- CONTEÚDO -->
+<main class="flex-1 p-10 fade-in max-w-4xl mx-auto">
+
+    <h2 class="title-main mb-6">Atualizar dados dos alunos</h2>
+
+    <!-- CAMPO DE BUSCA -->
+    <div class="mb-6">
+        <input id="busca" type="text"
+               class="input-base w-full"
+               placeholder="Buscar aluno por nome ou e-mail..."
+               onkeyup="buscarAlunos()">
+    </div>
+
+    <!-- TABELA -->
+    <div class="treino-card shadow-prim p-0 overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-neutral-800 text-gray-400 text-left">
+            <tr>
+                <th class="p-3">Nome</th>
+                <th class="p-3">E-mail</th>
+                <th class="p-3 w-20">Editar</th>
+            </tr>
+            </thead>
+
+            <tbody id="lista" class="text-white"></tbody>
+        </table>
+    </div>
+
+    <!-- MODAL DE EDIÇÃO -->
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+        <div class="bg-neutral-900 p-8 rounded-xl w-full max-w-lg shadow-prim">
+
+            <h3 class="text-xl font-bold text-orange-400 mb-4">Editar aluno</h3>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm text-soft">Nome</label>
+                    <input id="edit-nome" class="input-base" />
+                </div>
+
+                <div>
+                    <label class="text-sm text-soft">E-mail</label>
+                    <input id="edit-email" class="input-base" />
+                </div>
+
+                <div>
+                    <label class="text-sm text-soft">Telefone</label>
+                    <input id="edit-telefone" class="input-base" />
+                </div>
+
+                <div>
+                    <label class="text-sm text-soft">Plano</label>
+                    <select id="edit-plano" class="input-base">
+                        <option value="MENSAL">Mensal</option>
+                        <option value="SEMANAL">Semanal</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm text-soft">Observações</label>
+                    <textarea id="edit-observacoes" class="input-base h-28"></textarea>
+                </div>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+                <button onclick="salvarEdicao()" class="btn-orange px-4 py-2 rounded-lg">Salvar</button>
+                <button onclick="fecharModal()" class="px-4 py-2 bg-neutral-700 rounded-lg">Cancelar</button>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+    let alunoAtual = null;
+
+    document.addEventListener("DOMContentLoaded", carregarAlunos);
+
+    function carregarAlunos() {
+        apiGet("/alunos", true).then(lista => {
+            renderTabela(lista);
+            window.__alunos = lista;
+        });
+    }
+
+    function buscarAlunos() {
+        const termo = document.getElementById("busca").value.toLowerCase();
+        const filtrados = window.__alunos.filter(a =>
+            a.nome.toLowerCase().includes(termo) ||
+            a.email.toLowerCase().includes(termo)
+        );
+        renderTabela(filtrados);
+    }
+
+    function renderTabela(lista) {
+        const tbody = document.getElementById("lista");
+        tbody.innerHTML = "";
+
+        lista.forEach(a => {
+            tbody.innerHTML += `
+                <tr class="border-t border-neutral-800">
+                    <td class="p-3">${a.nome}</td>
+                    <td class="p-3">${a.email}</td>
+                    <td class="p-3">
+                        <button class="text-orange-400 hover:text-orange-300" onclick='editar(${JSON.stringify(a)})'>
+                            Editar
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function editar(aluno) {
+        alunoAtual = aluno;
+        document.getElementById("modal").classList.remove("hidden");
+
+        document.getElementById("edit-nome").value = aluno.nome;
+        document.getElementById("edit-email").value = aluno.email;
+        document.getElementById("edit-telefone").value = aluno.telefone || "";
+        document.getElementById("edit-plano").value = aluno.plano || "MENSAL";
+        document.getElementById("edit-observacoes").value = aluno.observacoes || "";
+    }
+
+    function fecharModal() {
+        document.getElementById("modal").classList.add("hidden");
+    }
+
+    function salvarEdicao() {
+        const body = {
+            nome: document.getElementById("edit-nome").value,
+            email: document.getElementById("edit-email").value,
+            telefone: document.getElementById("edit-telefone").value,
+            plano: document.getElementById("edit-plano").value,
+            observacoes: document.getElementById("edit-observacoes").value
+        };
+
+        apiPost(`/alunos/${alunoAtual.id}`, body, true).then(r => {
+            alert("Aluno atualizado!");
+            fecharModal();
+            carregarAlunos();
+        });
+    }
+</script>
+
+</body>
+</html>
