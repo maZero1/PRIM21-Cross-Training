@@ -2,6 +2,7 @@ package com.prim21.PRIM21.Cross.Training.model;
 
 import com.prim21.PRIM21.Cross.Training.model.Enum.StatusReposicao;
 import java.util.Date;
+import java.util.Objects;
 
 public class ReposicaoAula {
 
@@ -10,6 +11,16 @@ public class ReposicaoAula {
     private Date dataReposicao;
     private String motivo;
     private StatusReposicao status;
+
+    public ReposicaoAula() {}
+
+    public ReposicaoAula(int id, Date dataOriginal, Date dataReposicao, String motivo, StatusReposicao status) {
+        this.id = id;
+        this.dataOriginal = dataOriginal;
+        this.dataReposicao = dataReposicao;
+        this.motivo = motivo;
+        this.status = status;
+    }
 
     public void aprovar(Date dataReposicao) {
         this.dataReposicao = dataReposicao;
@@ -43,5 +54,15 @@ public class ReposicaoAula {
 
     public void setMotivo(String motivo) {
         this.motivo = motivo;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReposicaoAula that)) return false;
+        return id == that.id;
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

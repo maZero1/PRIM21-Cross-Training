@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Prim21CrossTrainingApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Prim21CrossTrainingApplication.class, args);
+        SpringApplication.run(Prim21CrossTrainingApplication.class, args);
 	}
-
 }
