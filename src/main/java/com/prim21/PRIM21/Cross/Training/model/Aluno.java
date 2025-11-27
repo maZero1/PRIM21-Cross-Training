@@ -79,29 +79,78 @@ public class Aluno {
         return r;
     }
 
-    public List<MatriculaHorario> getMatriculas() {
-        return matriculas;
-    }
-
-    public List<ReposicaoAula> getReposicoes() {
-        return reposicoes;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
         return nome;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public String getTelefone() {
         return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public String getEmail() {
         return email;
     }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public StatusAluno getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusAluno status) {
+        this.status = status;
+    }
+
+    public List<Mensalidade> getMensalidades() {
+        return mensalidades;
+    }
+
+    public void setMensalidades(List<Mensalidade> mensalidades) {
+        this.mensalidades = mensalidades;
+    }
+
+    public List<MatriculaHorario> getMatriculas() {
+        return matriculas;
+    }
+
+    public void setMatriculas(List<MatriculaHorario> matriculas) {
+        this.matriculas = matriculas;
+    }
+
+    public List<ReposicaoAula> getReposicoes() {
+        return reposicoes;
+    }
+
+    public void setReposicoes(List<ReposicaoAula> reposicoes) {
+        this.reposicoes = reposicoes;
+    }
+
 
     @Override
     public boolean equals(Object o) {
