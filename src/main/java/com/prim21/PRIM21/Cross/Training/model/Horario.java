@@ -1,5 +1,6 @@
 package com.prim21.PRIM21.Cross.Training.model;
 
+import com.prim21.PRIM21.Cross.Training.model.Enum.DiaSemana;
 import jakarta.persistence.*;
 
 import java.sql.Time;
@@ -12,7 +13,7 @@ public class Horario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String diaSemana;
+    private DiaSemana diaSemana;
 
     private Time horaInicio;
 
@@ -23,7 +24,7 @@ public class Horario {
     public Horario() {
     }
 
-    public Horario(int id, String diaSemana, Time horaInicio, Time horaFim, String descricao) {
+    public Horario(int id, DiaSemana diaSemana, Time horaInicio, Time horaFim, String descricao) {
         this.id = id;
         this.diaSemana = diaSemana;
         this.horaInicio = horaInicio;
@@ -39,11 +40,11 @@ public class Horario {
         this.id = id;
     }
 
-    public String getDiaSemana() {
+    public DiaSemana getDiaSemana() {
         return diaSemana;
     }
 
-    public void setDiaSemana(String diaSemana) {
+    public void setDiaSemana(DiaSemana diaSemana) {
         this.diaSemana = diaSemana;
     }
 
