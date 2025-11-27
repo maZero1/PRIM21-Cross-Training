@@ -3,77 +3,55 @@ package com.prim21.PRIM21.Cross.Training.model;
 import com.prim21.PRIM21.Cross.Training.model.Enum.SituacaoMatricula;
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.Objects;
+import java.time.LocalDate;
 
 @Entity
+@Table(name = "matricula_horario")
 public class MatriculaHorario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @Temporal(TemporalType.DATE)
-    private Date dataInicio;
-
-    @Temporal(TemporalType.DATE)
-    private Date dataFim;
+    private LocalDate dataMatricula;
 
     @Enumerated(EnumType.STRING)
     private SituacaoMatricula situacao;
 
     @ManyToOne
+    @JoinColumn(name = "aluno_id")
+    private Aluno aluno;
+
+    @ManyToOne
+    @JoinColumn(name = "horario_id")
     private Horario horario;
 
     public MatriculaHorario() {
     }
 
-    public MatriculaHorario(int id, Date dataInicio, Date dataFim, SituacaoMatricula situacao, Horario horario) {
+    public MatriculaHorario(Long id, LocalDate dataMatricula, SituacaoMatricula situacao,
+                            Aluno aluno, Horario horario) {
         this.id = id;
-        this.dataInicio = dataInicio;
-        this.dataFim = dataFim;
+        this.dataMatricula = dataMatricula;
         this.situacao = situacao;
+        this.aluno = aluno;
         this.horario = horario;
     }
 
-    public void ativar() {
-        this.situacao = SituacaoMatricula.ATIVA;
-    }
-
-    public void trancar() {
-        this.situacao = SituacaoMatricula.TRANCADA;
-    }
-
-    public void encerrar() {
-        this.situacao = SituacaoMatricula.ENCERRADA;
-    }
-
-    public boolean estaAtiva() {
-        return this.situacao == SituacaoMatricula.ATIVA;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Date getDataInicio() {
-        return dataInicio;
+    public LocalDate getDataMatricula() {
+        return dataMatricula;
     }
 
-    public void setDataInicio(Date dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
-    public Date getDataFim() {
-        return dataFim;
-    }
-
-    public void setDataFim(Date dataFim) {
-        this.dataFim = dataFim;
+    public void setDataMatricula(LocalDate dataMatricula) {
+        this.dataMatricula = dataMatricula;
     }
 
     public SituacaoMatricula getSituacao() {
@@ -84,23 +62,19 @@ public class MatriculaHorario {
         this.situacao = situacao;
     }
 
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
+    }
+
     public Horario getHorario() {
         return horario;
     }
 
     public void setHorario(Horario horario) {
         this.horario = horario;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MatriculaHorario that)) return false;
-        return id == that.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

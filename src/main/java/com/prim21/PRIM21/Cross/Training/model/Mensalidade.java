@@ -3,83 +3,56 @@ package com.prim21.PRIM21.Cross.Training.model;
 import com.prim21.PRIM21.Cross.Training.model.Enum.StatusPagamento;
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.Objects;
+import java.time.LocalDate;
 
 @Entity
+@Table(name = "mensalidade")
 public class Mensalidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    private String mesReferencia;
-
-    @Temporal(TemporalType.DATE)
-    private Date dataVencimento;
-
-    @Temporal(TemporalType.DATE)
-    private Date dataPagamento;
+    private String plano;
 
     private Double valor;
 
+    private LocalDate dataVencimento;
+
     @Enumerated(EnumType.STRING)
-    private StatusPagamento statusPagamento;
+    private StatusPagamento status;
+
+    @ManyToOne
+    @JoinColumn(name = "aluno_id")
+    private Aluno aluno;
 
     public Mensalidade() {
     }
 
-    public Mensalidade(int id, String mesReferencia, Date dataVencimento, Double valor, StatusPagamento statusPagamento) {
+    public Mensalidade(Long id, String plano, Double valor, LocalDate dataVencimento,
+                       StatusPagamento status, Aluno aluno) {
         this.id = id;
-        this.mesReferencia = mesReferencia;
-        this.dataVencimento = dataVencimento;
+        this.plano = plano;
         this.valor = valor;
-        this.statusPagamento = statusPagamento;
+        this.dataVencimento = dataVencimento;
+        this.status = status;
+        this.aluno = aluno;
     }
 
-    public void registrarPagamento(Date dataPagamento) {
-        this.dataPagamento = dataPagamento;
-        this.statusPagamento = StatusPagamento.PAGO;
-    }
-
-    public void marcarComoAtrasada() {
-        this.statusPagamento = StatusPagamento.ATRASADO;
-    }
-
-    public boolean estaPaga() {
-        return StatusPagamento.PAGO.equals(this.statusPagamento);
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getMesReferencia() {
-        return mesReferencia;
+    public String getPlano() {
+        return plano;
     }
 
-    public void setMesReferencia(String mesReferencia) {
-        this.mesReferencia = mesReferencia;
-    }
-
-    public Date getDataVencimento() {
-        return dataVencimento;
-    }
-
-    public void setDataVencimento(Date dataVencimento) {
-        this.dataVencimento = dataVencimento;
-    }
-
-    public Date getDataPagamento() {
-        return dataPagamento;
-    }
-
-    public void setDataPagamento(Date dataPagamento) {
-        this.dataPagamento = dataPagamento;
+    public void setPlano(String plano) {
+        this.plano = plano;
     }
 
     public Double getValor() {
@@ -90,23 +63,27 @@ public class Mensalidade {
         this.valor = valor;
     }
 
-    public StatusPagamento getStatusPagamento() {
-        return statusPagamento;
+    public LocalDate getDataVencimento() {
+        return dataVencimento;
     }
 
-    public void setStatusPagamento(StatusPagamento statusPagamento) {
-        this.statusPagamento = statusPagamento;
+    public void setDataVencimento(LocalDate dataVencimento) {
+        this.dataVencimento = dataVencimento;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Mensalidade that)) return false;
-        return id == that.id;
+    public StatusPagamento getStatus() {
+        return status;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setStatus(StatusPagamento status) {
+        this.status = status;
+    }
+
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
     }
 }

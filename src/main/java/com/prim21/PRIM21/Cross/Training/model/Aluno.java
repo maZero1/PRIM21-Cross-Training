@@ -1,94 +1,62 @@
 package com.prim21.PRIM21.Cross.Training.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.prim21.PRIM21.Cross.Training.model.Enum.StatusAluno;
-import com.prim21.PRIM21.Cross.Training.model.Enum.StatusReposicao;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDate;
 
 @Entity
+@Table(name = "aluno")
 public class Aluno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String nome;
-    private String telefone;
+
+    @Column(unique = true)
     private String email;
 
-    @Temporal(TemporalType.DATE)
-    private Date dataCadastro;
+    private String telefone;
+
+    private LocalDate dataNascimento;
 
     @Enumerated(EnumType.STRING)
     private StatusAluno status;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Mensalidade> mensalidades = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "horario_id")
+    private Horario horario;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MatriculaHorario> matriculas = new ArrayList<>();
+    private LocalDate dataCadastro;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReposicaoAula> reposicoes = new ArrayList<>();
+    @JsonIgnore
+    private String senha;
 
     public Aluno() {
     }
 
-    public Aluno(int id, String nome, String telefone, String email, Date dataCadastro) {
+    public Aluno(Long id, String nome, String email, String telefone,
+                 LocalDate dataNascimento, StatusAluno status,
+                 Horario horario, LocalDate dataCadastro, String senha) {
         this.id = id;
         this.nome = nome;
-        this.telefone = telefone;
         this.email = email;
+        this.telefone = telefone;
+        this.dataNascimento = dataNascimento;
+        this.status = status;
+        this.horario = horario;
         this.dataCadastro = dataCadastro;
+        this.senha = senha;
     }
 
-    public void atualizarDados(String nome, String telefone, String email) {
-        this.nome = nome;
-        this.telefone = telefone;
-        this.email = email;
-    }
-
-    public void marcarComoInadimplente() {
-        this.status = StatusAluno.INADIMPLENTE;
-    }
-
-    public void marcarComoAtivo() {
-        this.status = StatusAluno.ATIVO;
-    }
-
-    public List<Mensalidade> obterMensalidadesEmAberto() {
-        return mensalidades.stream()
-                .filter(m -> !m.estaPaga())
-                .toList();
-    }
-
-    public List<Horario> obterHorarios() {
-        return matriculas.stream()
-                .filter(MatriculaHorario::estaAtiva)
-                .map(MatriculaHorario::getHorario)
-                .toList();
-    }
-
-    public ReposicaoAula solicitarReposicao(Date dataOriginal, String motivo) {
-        ReposicaoAula r = new ReposicaoAula();
-        r.setDataOriginal(dataOriginal);
-        r.setMotivo(motivo);
-        r.setStatus(StatusReposicao.SOLICITADA);
-
-        reposicoes.add(r);
-        return r;
-    }
-
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -100,14 +68,6 @@ public class Aluno {
         this.nome = nome;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -116,12 +76,20 @@ public class Aluno {
         this.email = email;
     }
 
-    public Date getDataCadastro() {
-        return dataCadastro;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setDataCadastro(Date dataCadastro) {
-        this.dataCadastro = dataCadastro;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public StatusAluno getStatus() {
@@ -132,39 +100,27 @@ public class Aluno {
         this.status = status;
     }
 
-    public List<Mensalidade> getMensalidades() {
-        return mensalidades;
+    public Horario getHorario() {
+        return horario;
     }
 
-    public void setMensalidades(List<Mensalidade> mensalidades) {
-        this.mensalidades = mensalidades;
+    public void setHorario(Horario horario) {
+        this.horario = horario;
     }
 
-    public List<MatriculaHorario> getMatriculas() {
-        return matriculas;
+    public LocalDate getDataCadastro() {
+        return dataCadastro;
     }
 
-    public void setMatriculas(List<MatriculaHorario> matriculas) {
-        this.matriculas = matriculas;
+    public void setDataCadastro(LocalDate dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 
-    public List<ReposicaoAula> getReposicoes() {
-        return reposicoes;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setReposicoes(List<ReposicaoAula> reposicoes) {
-        this.reposicoes = reposicoes;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Aluno aluno)) return false;
-        return id == aluno.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

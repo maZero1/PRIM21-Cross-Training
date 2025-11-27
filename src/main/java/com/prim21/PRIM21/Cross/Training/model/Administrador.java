@@ -1,34 +1,37 @@
 package com.prim21.PRIM21.Cross.Training.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "administrador")
 public class Administrador {
 
-    private int id;
-    private String nome;
-    private String email;
-    private String senha;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private List<Aluno> alunos = new ArrayList<>();
-    private List<Horario> horarios = new ArrayList<>();
+    private String nome;
+
+    @Column(unique = true)
+    private String email;
+
+    private String senha;
 
     public Administrador() {
     }
 
-    public Administrador(int id, String nome, String email, String senha) {
+    public Administrador(Long id, String nome, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -54,33 +57,5 @@ public class Administrador {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public List<Aluno> getAlunos() {
-        return alunos;
-    }
-
-    public void setAlunos(List<Aluno> alunos) {
-        this.alunos = alunos;
-    }
-
-    public List<Horario> getHorarios() {
-        return horarios;
-    }
-
-    public void setHorarios(List<Horario> horarios) {
-        this.horarios = horarios;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Administrador that)) return false;
-        return id == that.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

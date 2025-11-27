@@ -3,73 +3,75 @@ package com.prim21.PRIM21.Cross.Training.model;
 import com.prim21.PRIM21.Cross.Training.model.Enum.StatusReposicao;
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.Objects;
+import java.time.LocalDate;
 
 @Entity
+@Table(name = "reposicao_aula")
 public class ReposicaoAula {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @Temporal(TemporalType.DATE)
-    private Date dataOriginal;
-
-    @Temporal(TemporalType.DATE)
-    private Date dataReposicao;
+    private LocalDate data;
 
     private String motivo;
 
     @Enumerated(EnumType.STRING)
     private StatusReposicao status;
 
+    @ManyToOne
+    @JoinColumn(name = "aluno_id")
+    private Aluno aluno;
+
     public ReposicaoAula() {
-        this.status = StatusReposicao.SOLICITADA;
     }
 
-    public void aprovar(Date dataReposicao) {
-        this.dataReposicao = dataReposicao;
-        this.status = StatusReposicao.APROVADA;
-    }
-
-    public void registrarRealizacao() {
-        this.status = StatusReposicao.REALIZADA;
-    }
-
-    public void cancelar(String motivo) {
+    public ReposicaoAula(Long id, LocalDate data, String motivo, StatusReposicao status, Aluno aluno) {
+        this.id = id;
+        this.data = data;
         this.motivo = motivo;
-        this.status = StatusReposicao.CANCELADA;
+        this.status = status;
+        this.aluno = aluno;
     }
 
-    public int getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Date getDataOriginal() { return dataOriginal; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public void setDataOriginal(Date dataOriginal) { this.dataOriginal = dataOriginal; }
+    public LocalDate getData() {
+        return data;
+    }
 
-    public Date getDataReposicao() { return dataReposicao; }
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
 
-    public String getMotivo() { return motivo; }
+    public String getMotivo() {
+        return motivo;
+    }
 
-    public void setMotivo(String motivo) { this.motivo = motivo; }
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
 
-    public StatusReposicao getStatus() { return status; }
+    public StatusReposicao getStatus() {
+        return status;
+    }
 
     public void setStatus(StatusReposicao status) {
         this.status = status;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ReposicaoAula that)) return false;
-        return id == that.id;
+    public Aluno getAluno() {
+        return aluno;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
     }
 }

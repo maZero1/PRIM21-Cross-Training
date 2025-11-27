@@ -1,63 +1,77 @@
 package com.prim21.PRIM21.Cross.Training.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.prim21.PRIM21.Cross.Training.model.Enum.DiaSemana;
 import jakarta.persistence.*;
 
-import java.sql.Time;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
+@Table(name = "horario")
 public class Horario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+
+    private String horario;
 
     @Enumerated(EnumType.STRING)
     private DiaSemana diaSemana;
 
-    private Time horaInicio;
+    private Integer capacidade;
 
-    private Time horaFim;
+    @JsonIgnore
+    @OneToMany(mappedBy = "horario")
+    private List<Aluno> alunos;
 
-    private String descricao;
+    public Horario() {
+    }
 
-    public Horario() {}
-
-    public Horario(DiaSemana diaSemana, Time horaInicio, Time horaFim, String descricao) {
+    public Horario(Long id, String horario, DiaSemana diaSemana, Integer capacidade) {
+        this.id = id;
+        this.horario = horario;
         this.diaSemana = diaSemana;
-        this.horaInicio = horaInicio;
-        this.horaFim = horaFim;
-        this.descricao = descricao;
+        this.capacidade = capacidade;
     }
 
-    public int getId() { return id; }
-
-    public DiaSemana getDiaSemana() { return diaSemana; }
-
-    public void setDiaSemana(DiaSemana diaSemana) { this.diaSemana = diaSemana; }
-
-    public Time getHoraInicio() { return horaInicio; }
-
-    public void setHoraInicio(Time horaInicio) { this.horaInicio = horaInicio; }
-
-    public Time getHoraFim() { return horaFim; }
-
-    public void setHoraFim(Time horaFim) { this.horaFim = horaFim; }
-
-    public String getDescricao() { return descricao; }
-
-    public void setDescricao(String descricao) { this.descricao = descricao; }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Horario horario)) return false;
-        return id == horario.id;
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getHorario() {
+        return horario;
+    }
+
+    public void setHorario(String horario) {
+        this.horario = horario;
+    }
+
+    public DiaSemana getDiaSemana() {
+        return diaSemana;
+    }
+
+    public void setDiaSemana(DiaSemana diaSemana) {
+        this.diaSemana = diaSemana;
+    }
+
+    public Integer getCapacidade() {
+        return capacidade;
+    }
+
+    public void setCapacidade(Integer capacidade) {
+        this.capacidade = capacidade;
+    }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
     }
 }
