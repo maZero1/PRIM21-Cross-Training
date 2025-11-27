@@ -2,42 +2,41 @@ package com.prim21.PRIM21.Cross.Training.controller;
 
 import com.prim21.PRIM21.Cross.Training.model.Aluno;
 import com.prim21.PRIM21.Cross.Training.service.AlunoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/alunos")
+@RequestMapping("/alunos")
+@CrossOrigin("*")
 public class AlunoController {
 
-    private final AlunoService alunoService;
-
-    public AlunoController(AlunoService alunoService) {
-        this.alunoService = alunoService;
-    }
-
-    @PostMapping
-    public Aluno cadastrar(@RequestBody Aluno aluno) {
-        return alunoService.salvar(aluno);
-    }
+    @Autowired
+    private AlunoService alunoService;
 
     @GetMapping
-    public List<Aluno> listarTodos() {
-        return alunoService.listarTodos();
+    public List<Aluno> listar() {
+        return alunoService.listar();
     }
 
     @GetMapping("/{id}")
-    public Aluno buscarPorId(@PathVariable int id) {
+    public Aluno buscar(@PathVariable Long id) {
         return alunoService.buscarPorId(id);
     }
 
-    @PutMapping("/{id}")
-    public Aluno atualizar(@PathVariable int id, @RequestBody Aluno alunoAtualizado) {
-        return alunoService.atualizar(id, alunoAtualizado);
+    @PostMapping
+    public Aluno salvar(@RequestBody Aluno aluno) {
+        return alunoService.salvar(aluno);
     }
 
     @DeleteMapping("/{id}")
-    public void excluir(@PathVariable int id) {
-        alunoService.excluir(id);
+    public void deletar(@PathVariable Long id) {
+        alunoService.deletar(id);
+    }
+
+    @PostMapping("/login")
+    public Aluno login(@RequestParam String email, @RequestParam String senha) {
+        return alunoService.login(email, senha);
     }
 }

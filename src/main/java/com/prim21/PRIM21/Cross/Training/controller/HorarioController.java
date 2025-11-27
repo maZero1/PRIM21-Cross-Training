@@ -1,43 +1,48 @@
 package com.prim21.PRIM21.Cross.Training.controller;
 
 import com.prim21.PRIM21.Cross.Training.model.Horario;
+import com.prim21.PRIM21.Cross.Training.service.AlunoService;
 import com.prim21.PRIM21.Cross.Training.service.HorarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/horarios")
+@RequestMapping("/horarios")
+@CrossOrigin("*")
 public class HorarioController {
 
-    private final HorarioService service;
+    @Autowired
+    private HorarioService horarioService;
 
-    public HorarioController(HorarioService service) {
-        this.service = service;
-    }
-
-    @PostMapping
-    public Horario criar(@RequestBody Horario horario) {
-        return service.criar(horario);
-    }
+    @Autowired
+    private AlunoService alunoService;
 
     @GetMapping
     public List<Horario> listar() {
-        return service.listar();
+        return horarioService.listar();
     }
 
     @GetMapping("/{id}")
-    public Horario buscar(@PathVariable int id) {
-        return service.buscarPorId(id);
+    public Horario buscar(@PathVariable Long id) {
+        return horarioService.buscar(id);
     }
 
-    @PutMapping("/{id}")
-    public Horario atualizar(@PathVariable int id, @RequestBody Horario dados) {
-        return service.atualizar(id, dados);
+    @PostMapping
+    public Horario salvar(@RequestBody Horario horario) {
+        return horarioService.salvar(horario);
     }
 
     @DeleteMapping("/{id}")
-    public void excluir(@PathVariable int id) {
-        service.excluir(id);
+    public void deletar(@PathVariable Long id) {
+        horarioService.deletar(id);
+    }
+
+    @GetMapping("/{id}/alunos")
+    public List<?> listarAlunosDoHorario(@PathVariable Long id) {
+        return alunoService.listar().stream()
+                .filter(a -> a.getHorario() != null && a.getHorario().getId().equals(id))
+                .toList();
     }
 }

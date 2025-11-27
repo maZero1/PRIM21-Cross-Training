@@ -2,42 +2,36 @@ package com.prim21.PRIM21.Cross.Training.controller;
 
 import com.prim21.PRIM21.Cross.Training.model.MatriculaHorario;
 import com.prim21.PRIM21.Cross.Training.service.MatriculaHorarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/matriculas")
+@RequestMapping("/matriculas")
+@CrossOrigin("*")
 public class MatriculaHorarioController {
 
-    private final MatriculaHorarioService service;
-
-    public MatriculaHorarioController(MatriculaHorarioService service) {
-        this.service = service;
-    }
+    @Autowired
+    private MatriculaHorarioService matriculaService;
 
     @GetMapping
     public List<MatriculaHorario> listar() {
-        return service.listar();
+        return matriculaService.listar();
     }
 
-    @GetMapping("/{id}")
-    public MatriculaHorario buscar(@PathVariable int id) {
-        return service.buscar(id);
+    @GetMapping("/aluno/{id}")
+    public List<MatriculaHorario> porAluno(@PathVariable Long id) {
+        return matriculaService.buscarPorAluno(id);
     }
 
-    @PutMapping("/{id}/ativar")
-    public MatriculaHorario ativar(@PathVariable int id) {
-        return service.ativar(id);
+    @GetMapping("/horario/{id}")
+    public List<MatriculaHorario> porHorario(@PathVariable Long id) {
+        return matriculaService.buscarPorHorario(id);
     }
 
-    @PutMapping("/{id}/trancar")
-    public MatriculaHorario trancar(@PathVariable int id) {
-        return service.trancar(id);
-    }
-
-    @PutMapping("/{id}/encerrar")
-    public MatriculaHorario encerrar(@PathVariable int id) {
-        return service.encerrar(id);
+    @PostMapping
+    public MatriculaHorario salvar(@RequestBody MatriculaHorario m) {
+        return matriculaService.salvar(m);
     }
 }
