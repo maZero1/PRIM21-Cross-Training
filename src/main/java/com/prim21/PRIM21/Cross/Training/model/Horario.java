@@ -1,12 +1,19 @@
 package com.prim21.PRIM21.Cross.Training.model;
 
 import com.prim21.PRIM21.Cross.Training.model.Enum.DiaSemana;
+import jakarta.persistence.*;
+
 import java.sql.Time;
 import java.util.Objects;
 
+@Entity
 public class Horario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Enumerated(EnumType.STRING)
     private DiaSemana diaSemana;
     private Time horaInicio;
     private Time horaFim;

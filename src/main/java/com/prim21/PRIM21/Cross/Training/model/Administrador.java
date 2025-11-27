@@ -15,9 +15,9 @@ public class Administrador {
     private List<Aluno> alunos = new ArrayList<>();
     private List<Horario> horarios = new ArrayList<>();
 
-    public Administrador(){}
+    public Administrador() {}
 
-    public Administrador(int id, String nome, String email, String senha){
+    public Administrador(int id, String nome, String email, String senha) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -52,8 +52,6 @@ public class Administrador {
 
     public MatriculaHorario agendarAlunoEmHorario(Aluno aluno, Horario horario) {
         MatriculaHorario matricula = new MatriculaHorario();
-        matricula.setHorario(horario);
-        matricula.ativar();
         aluno.getMatriculas().add(matricula);
         return matricula;
     }
@@ -67,6 +65,7 @@ public class Administrador {
                 .filter(a -> !a.obterMensalidadesEmAberto().isEmpty())
                 .toList();
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

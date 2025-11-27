@@ -1,16 +1,27 @@
 package com.prim21.PRIM21.Cross.Training.model;
 
 import com.prim21.PRIM21.Cross.Training.model.Enum.StatusPagamento;
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
 public class Mensalidade {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String mesReferencia;
+
+    @Temporal(TemporalType.DATE)
     private Date dataVencimento;
     private double valor;
+
+    @Enumerated(EnumType.STRING)
     private StatusPagamento statusPagamento;
+
+    @Temporal(TemporalType.DATE)
     private Date dataPagamento;
 
     public Mensalidade() {}

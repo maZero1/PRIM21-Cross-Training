@@ -1,15 +1,23 @@
 package com.prim21.PRIM21.Cross.Training.model;
 
 import com.prim21.PRIM21.Cross.Training.model.Enum.StatusReposicao;
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
 public class ReposicaoAula {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Temporal(TemporalType.DATE)
     private Date dataOriginal;
+    @Temporal(TemporalType.DATE)
     private Date dataReposicao;
     private String motivo;
+    @Enumerated(EnumType.STRING)
     private StatusReposicao status;
 
     public ReposicaoAula() {}
