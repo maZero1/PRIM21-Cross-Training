@@ -25,26 +25,15 @@ public class ReposicaoAula {
     private StatusReposicao status;
 
     public ReposicaoAula() {
-    }
-
-    public ReposicaoAula(int id, Date dataOriginal, Date dataReposicao, String motivo, StatusReposicao status) {
-        this.id = id;
-        this.dataOriginal = dataOriginal;
-        this.dataReposicao = dataReposicao;
-        this.motivo = motivo;
-        this.status = status;
-    }
-
-    public void solicitar() {
         this.status = StatusReposicao.SOLICITADA;
     }
 
-    public void aprovar() {
+    public void aprovar(Date dataReposicao) {
+        this.dataReposicao = dataReposicao;
         this.status = StatusReposicao.APROVADA;
     }
 
-    public void registrarRealizacao(Date dataReposicao) {
-        this.dataReposicao = dataReposicao;
+    public void registrarRealizacao() {
         this.status = StatusReposicao.REALIZADA;
     }
 
@@ -53,45 +42,24 @@ public class ReposicaoAula {
         this.status = StatusReposicao.CANCELADA;
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public Date getDataOriginal() { return dataOriginal; }
 
-    public Date getDataOriginal() {
-        return dataOriginal;
-    }
+    public void setDataOriginal(Date dataOriginal) { this.dataOriginal = dataOriginal; }
 
-    public void setDataOriginal(Date dataOriginal) {
-        this.dataOriginal = dataOriginal;
-    }
+    public Date getDataReposicao() { return dataReposicao; }
 
-    public Date getDataReposicao() {
-        return dataReposicao;
-    }
+    public String getMotivo() { return motivo; }
 
-    public void setDataReposicao(Date dataReposicao) {
-        this.dataReposicao = dataReposicao;
-    }
+    public void setMotivo(String motivo) { this.motivo = motivo; }
 
-    public String getMotivo() {
-        return motivo;
-    }
-
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
-
-    public StatusReposicao getStatus() {
-        return status;
-    }
+    public StatusReposicao getStatus() { return status; }
 
     public void setStatus(StatusReposicao status) {
         this.status = status;
     }
+
 
     @Override
     public boolean equals(Object o) {
