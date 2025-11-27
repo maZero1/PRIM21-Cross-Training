@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Dashboard - PRIM 21</title>
+
+    <style>
+        body {
+            background: #0a0a0a;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="text-white min-h-screen">
+
+<!-- HEADER -->
+<header class="w-full bg-neutral-900 border-b border-neutral-800 px-6 py-4 flex justify-between items-center shadow-lg">
+    <div class="flex items-center gap-3">
+        <img src="./assets/img/prim21-logo.png" class="w-14">
+        <h1 class="text-2xl font-bold text-orange-400">PRIM 21</h1>
+    </div>
+
+    <button onclick="logout()"
+            class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-medium transition">
+        Sair
+    </button>
+</header>
+
+<!-- CONTEÚDO -->
+<main class="max-w-5xl mx-auto px-6 mt-10">
+
+    <h2 class="text-3xl font-bold text-orange-400 mb-4">Painel Principal</h2>
+    <p class="text-gray-300 mb-10">Gerencie seus treinos e acompanhe seu desempenho.</p>
+
+    <!-- GRID DE CARDS -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- CARD TREINO -->
+        <a href="treino.html"
+           class="group bg-neutral-900 border border-neutral-800 p-6 rounded-2xl hover:bg-neutral-800 hover:border-orange-500 transition shadow-xl">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="bg-orange-500 p-3 rounded-full shadow-lg">
+                    <span class="text-2xl">🏋️‍♂️</span>
+                </div>
+
+                <h3 class="text-xl font-semibold text-orange-300">Treino do Dia</h3>
+            </div>
+
+            <p class="text-gray-400 group-hover:text-gray-200 transition">
+                Acesse o treino programado para hoje e acompanhe sua performance.
+            </p>
+        </a>
+
+        <!-- CARD HISTÓRICO -->
+        <a href="#"
+           class="group bg-neutral-900 border border-neutral-800 p-6 rounded-2xl hover:bg-neutral-800 hover:border-orange-500 transition shadow-xl">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="bg-orange-500 p-3 rounded-full shadow-lg">
+                    <span class="text-2xl">📅</span>
+                </div>
+
+                <h3 class="text-xl font-semibold text-orange-300">Histórico</h3>
+            </div>
+
+            <p class="text-gray-400 group-hover:text-gray-200 transition">
+                Em breve: acompanhe sua evolução diária.
+            </p>
+        </a>
+
+        <!-- CARD AVALIAÇÃO -->
+        <a href="#"
+           class="group bg-neutral-900 border border-neutral-800 p-6 rounded-2xl hover:bg-neutral-800 hover:border-orange-500 transition shadow-xl">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="bg-orange-500 p-3 rounded-full shadow-lg">
+                    <span class="text-2xl">📊</span>
+                </div>
+
+                <h3 class="text-xl font-semibold text-orange-300">Avaliações</h3>
+            </div>
+
+            <p class="text-gray-400 group-hover:text-gray-200 transition">
+                Em breve: relatórios de desempenho e métricas.
+            </p>
+        </a>
+
+    </div>
+</main>
+
+<script src="./js/auth.js"></script>
+
+</body>
+</html>

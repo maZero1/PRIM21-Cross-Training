@@ -1,0 +1,79 @@
+input, button, a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #111;
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 10px;
+}
+
+/* Fade-in suave*/
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.4s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+.card-hover {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Botão laranja padrão */
+.btn-orange {
+    background-color: #f97316;
+    transition: background-color 0.25s;
+}
+.btn-orange:hover {
+    background-color: #fb923c;
+}
+
+/* Título principal */
+.title-main {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #f97316;
+}
+
+/* Títulos de seção */
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #fbbf24;
+    margin-bottom: 6px;
+}
+
+/* Texto branco suave */
+.text-soft {
+    color: #d1d5db;
+}
+
+/* Card interno do treino */
+.treino-card {
+    background: #171717;
+    border: 1px solid #262626;
+    border-radius: 14px;
+    padding: 18px;
+}
+
+/* Shadow padrão */
+.shadow-prim {
+    box-shadow: 0px 0px 12px rgba(255, 115, 29, 0.12);
+}
+
+/* Transições padrões */
+.transition-fast {
+    transition: all 0.22s ease;
+}
