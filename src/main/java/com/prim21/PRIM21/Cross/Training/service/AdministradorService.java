@@ -11,66 +11,67 @@ import java.util.List;
 public class AdministradorService {
 
     private final AlunoRepository alunoRepository;
-    private final MensalidadeRepository mensalidadeRepository;
     private final HorarioRepository horarioRepository;
+    private final MensalidadeRepository mensalidadeRepository;
     private final MatriculaHorarioRepository matriculaHorarioRepository;
     private final ReposicaoAulaRepository reposicaoAulaRepository;
 
-    public AdministradorService(AlunoRepository alunoRepository,
-                                MensalidadeRepository mensalidadeRepository,
-                                HorarioRepository horarioRepository,
-                                MatriculaHorarioRepository matriculaHorarioRepository,
-                                ReposicaoAulaRepository reposicaoAulaRepository) {
-
+    public AdministradorService(
+            AlunoRepository alunoRepository,
+            HorarioRepository horarioRepository,
+            MensalidadeRepository mensalidadeRepository,
+            MatriculaHorarioRepository matriculaHorarioRepository,
+            ReposicaoAulaRepository reposicaoAulaRepository
+    ) {
         this.alunoRepository = alunoRepository;
-        this.mensalidadeRepository = mensalidadeRepository;
         this.horarioRepository = horarioRepository;
+        this.mensalidadeRepository = mensalidadeRepository;
         this.matriculaHorarioRepository = matriculaHorarioRepository;
         this.reposicaoAulaRepository = reposicaoAulaRepository;
     }
 
     public Aluno cadastrarAluno(Aluno aluno) {
+        aluno.marcarComoAtivo();
+        aluno.setDataCadastro(new Date());
         return alunoRepository.save(aluno);
     }
 
-    public Aluno atualizarAluno(Aluno alunoAtualizado) {
-        return alunoRepository.save(alunoAtualizado);
-    }
+    public Aluno atualizarAluno(int id, Aluno dados) {
+        Aluno aluno = alunoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
-    public Mensalidade registrarPagamento(int mensalidadeId, Date dataPagamento) {
-        Mensalidade m = mensalidadeRepository.findById(mensalidadeId)
-                .orElseThrow(() -> new IllegalArgumentException("Mensalidade não encontrada"));
-
-        m.registrarPagamento(dataPagamento);
-        return mensalidadeRepository.save(m);
+        aluno.setNome(dados.getNome());
+        aluno.setTelefone(dados.getTelefone());
+        aluno.setEmail(dados.getEmail());
+        aluno.setStatus(dados.getStatus());
+        return alunoRepository.save(aluno);
     }
 
     public Horario criarHorario(Horario horario) {
         return horarioRepository.save(horario);
     }
 
-    public MatriculaHorario agendarAlunoEmHorario(int alunoId, int horarioId) {
+    public MatriculaHorario matricular(int alunoId, int horarioId) {
+        Aluno aluno = alunoRepository.findById(alunoId)
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
         Horario horario = horarioRepository.findById(horarioId)
-                .orElseThrow(() -> new IllegalArgumentException("Horário não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Horário não encontrado"));
 
-        Aluno aluno = alunoRepository.findById(alunoId)
-                .orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado"));
+        MatriculaHorario m = new MatriculaHorario();
+        m.setDataInicio(new Date());
+        m.ativar();
 
-        MatriculaHorario matricula = new MatriculaHorario();
-        matricula.setDataInicio(new Date());
-        matricula.ativar();
-
-        aluno.getMatriculas().add(matricula);
-
+        aluno.getMatriculas().add(m);
+        matriculaHorarioRepository.save(m);
         alunoRepository.save(aluno);
-        matriculaHorarioRepository.save(matricula);
 
-        return matricula;
+        return m;
     }
-    public ReposicaoAula registrarReposicao(int alunoId, ReposicaoAula reposicao) {
+
+    public ReposicaoAula adicionarReposicao(int alunoId, ReposicaoAula reposicao) {
         Aluno aluno = alunoRepository.findById(alunoId)
-                .orElseThrow(() -> new IllegalArgumentException("Aluno não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
 
         aluno.getReposicoes().add(reposicao);
         reposicaoAulaRepository.save(reposicao);
@@ -78,7 +79,8 @@ public class AdministradorService {
 
         return reposicao;
     }
-    public List<Aluno> gerarRelatorioInadimplentes() {
+
+    public List<Aluno> listarInadimplentes() {
         return alunoRepository.findAll().stream()
                 .filter(a -> !a.obterMensalidadesEmAberto().isEmpty())
                 .toList();

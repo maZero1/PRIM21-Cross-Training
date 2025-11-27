@@ -10,36 +10,37 @@ import java.util.List;
 @Service
 public class MatriculaHorarioService {
 
-    private final MatriculaHorarioRepository matriculaHorarioRepository;
+    private final MatriculaHorarioRepository repository;
 
-    public MatriculaHorarioService(MatriculaHorarioRepository matriculaHorarioRepository) {
-        this.matriculaHorarioRepository = matriculaHorarioRepository;
-    }
-
-    public MatriculaHorario buscar(int id) {
-        return matriculaHorarioRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Matrícula não encontrada"));
+    public MatriculaHorarioService(MatriculaHorarioRepository repository) {
+        this.repository = repository;
     }
 
     public List<MatriculaHorario> listar() {
-        return matriculaHorarioRepository.findAll();
+        return repository.findAll();
+    }
+
+    public MatriculaHorario buscar(int id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Matrícula não encontrada"));
     }
 
     public MatriculaHorario ativar(int id) {
         MatriculaHorario m = buscar(id);
         m.ativar();
-        return matriculaHorarioRepository.save(m);
+        return repository.save(m);
     }
 
     public MatriculaHorario trancar(int id) {
         MatriculaHorario m = buscar(id);
         m.trancar();
-        return matriculaHorarioRepository.save(m);
+        return repository.save(m);
     }
 
     public MatriculaHorario encerrar(int id) {
         MatriculaHorario m = buscar(id);
-        m.encerrar(new Date());
-        return matriculaHorarioRepository.save(m);
+        m.setDataFim(new Date());
+        m.encerrar();
+        return repository.save(m);
     }
 }

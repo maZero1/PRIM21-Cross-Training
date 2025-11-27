@@ -10,36 +10,36 @@ import java.util.List;
 @Service
 public class ReposicaoAulaService {
 
-    private final ReposicaoAulaRepository reposicaoAulaRepository;
+    private final ReposicaoAulaRepository repository;
 
-    public ReposicaoAulaService(ReposicaoAulaRepository reposicaoAulaRepository) {
-        this.reposicaoAulaRepository = reposicaoAulaRepository;
-    }
-
-    public ReposicaoAula buscar(int id) {
-        return reposicaoAulaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Reposição não encontrada"));
+    public ReposicaoAulaService(ReposicaoAulaRepository repository) {
+        this.repository = repository;
     }
 
     public List<ReposicaoAula> listar() {
-        return reposicaoAulaRepository.findAll();
+        return repository.findAll();
     }
 
-    public ReposicaoAula aprovar(int id, Date dataReposicao) {
-        ReposicaoAula r = buscar(id);
-        r.aprovar(dataReposicao);
-        return reposicaoAulaRepository.save(r);
+    public ReposicaoAula buscar(int id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reposição não encontrada"));
     }
 
-    public ReposicaoAula registrarRealizacao(int id) {
+    public ReposicaoAula aprovar(int id) {
         ReposicaoAula r = buscar(id);
-        r.registrarRealizacao();
-        return reposicaoAulaRepository.save(r);
+        r.aprovar();
+        return repository.save(r);
+    }
+
+    public ReposicaoAula realizar(int id) {
+        ReposicaoAula r = buscar(id);
+        r.registrarRealizacao(new Date());
+        return repository.save(r);
     }
 
     public ReposicaoAula cancelar(int id, String motivo) {
         ReposicaoAula r = buscar(id);
         r.cancelar(motivo);
-        return reposicaoAulaRepository.save(r);
+        return repository.save(r);
     }
 }

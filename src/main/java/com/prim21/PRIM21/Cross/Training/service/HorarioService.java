@@ -9,30 +9,37 @@ import java.util.List;
 @Service
 public class HorarioService {
 
-    private final HorarioRepository horarioRepository;
+    private final HorarioRepository repository;
 
-    public HorarioService(HorarioRepository horarioRepository) {
-        this.horarioRepository = horarioRepository;
+    public HorarioService(HorarioRepository repository) {
+        this.repository = repository;
     }
 
-    public Horario criar(Horario horario) {
-        return horarioRepository.save(horario);
+    public Horario criar(Horario h) {
+        return repository.save(h);
     }
 
     public List<Horario> listar() {
-        return horarioRepository.findAll();
+        return repository.findAll();
     }
 
     public Horario buscarPorId(int id) {
-        return horarioRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Horário não encontrado"));
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Horário não encontrado"));
     }
 
-    public Horario atualizar(Horario horario) {
-        return horarioRepository.save(horario);
+    public Horario atualizar(int id, Horario dados) {
+        Horario h = buscarPorId(id);
+
+        h.setDescricao(dados.getDescricao());
+        h.setDiaSemana(dados.getDiaSemana());
+        h.setHoraInicio(dados.getHoraInicio());
+        h.setHoraFim(dados.getHoraFim());
+
+        return repository.save(h);
     }
 
     public void excluir(int id) {
-        horarioRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }

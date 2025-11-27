@@ -10,34 +10,28 @@ import java.util.List;
 @Service
 public class MensalidadeService {
 
-    private final MensalidadeRepository mensalidadeRepository;
+    private final MensalidadeRepository repository;
 
-    public MensalidadeService(MensalidadeRepository mensalidadeRepository) {
-        this.mensalidadeRepository = mensalidadeRepository;
+    public MensalidadeService(MensalidadeRepository repository) {
+        this.repository = repository;
     }
 
-    public Mensalidade criar(Mensalidade mensalidade) {
-        return mensalidadeRepository.save(mensalidade);
+    public Mensalidade criar(Mensalidade m) {
+        return repository.save(m);
     }
 
-    public List<Mensalidade> listarTodas() {
-        return mensalidadeRepository.findAll();
+    public List<Mensalidade> listar() {
+        return repository.findAll();
     }
 
-    public Mensalidade buscarPorId(int id) {
-        return mensalidadeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Mensalidade não encontrada"));
+    public Mensalidade buscar(int id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mensalidade não encontrada"));
     }
 
-    public Mensalidade registrarPagamento(int mensalidadeId, Date dataPagamento) {
-        Mensalidade m = buscarPorId(mensalidadeId);
-        m.registrarPagamento(dataPagamento);
-        return mensalidadeRepository.save(m);
-    }
-
-    public Mensalidade marcarComoAtrasada(int mensalidadeId) {
-        Mensalidade m = buscarPorId(mensalidadeId);
-        m.marcarComoAtrasada();
-        return mensalidadeRepository.save(m);
+    public Mensalidade registrarPagamento(int id) {
+        Mensalidade m = buscar(id);
+        m.registrarPagamento(new Date());
+        return repository.save(m);
     }
 }
