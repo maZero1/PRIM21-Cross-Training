@@ -1,6 +1,7 @@
 package com.prim21.PRIM21.Cross.Training.model;
 
 import com.prim21.PRIM21.Cross.Training.model.Enum.StatusAluno;
+import com.prim21.PRIM21.Cross.Training.model.Enum.StatusReposicao;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -76,10 +77,12 @@ public class Aluno {
         ReposicaoAula r = new ReposicaoAula();
         r.setDataOriginal(dataOriginal);
         r.setMotivo(motivo);
-        r.solicitar();
+        r.setStatus(StatusReposicao.SOLICITADA);
+
         reposicoes.add(r);
         return r;
     }
+
 
     public int getId() {
         return id;

@@ -13,6 +13,7 @@ public class Horario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Enumerated(EnumType.STRING)
     private DiaSemana diaSemana;
 
     private Time horaInicio;
@@ -21,56 +22,32 @@ public class Horario {
 
     private String descricao;
 
-    public Horario() {
-    }
+    public Horario() {}
 
-    public Horario(int id, DiaSemana diaSemana, Time horaInicio, Time horaFim, String descricao) {
-        this.id = id;
+    public Horario(DiaSemana diaSemana, Time horaInicio, Time horaFim, String descricao) {
         this.diaSemana = diaSemana;
         this.horaInicio = horaInicio;
         this.horaFim = horaFim;
         this.descricao = descricao;
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public DiaSemana getDiaSemana() { return diaSemana; }
 
-    public DiaSemana getDiaSemana() {
-        return diaSemana;
-    }
+    public void setDiaSemana(DiaSemana diaSemana) { this.diaSemana = diaSemana; }
 
-    public void setDiaSemana(DiaSemana diaSemana) {
-        this.diaSemana = diaSemana;
-    }
+    public Time getHoraInicio() { return horaInicio; }
 
-    public Time getHoraInicio() {
-        return horaInicio;
-    }
+    public void setHoraInicio(Time horaInicio) { this.horaInicio = horaInicio; }
 
-    public void setHoraInicio(Time horaInicio) {
-        this.horaInicio = horaInicio;
-    }
+    public Time getHoraFim() { return horaFim; }
 
-    public Time getHoraFim() {
-        return horaFim;
-    }
+    public void setHoraFim(Time horaFim) { this.horaFim = horaFim; }
 
-    public void setHoraFim(Time horaFim) {
-        this.horaFim = horaFim;
-    }
+    public String getDescricao() { return descricao; }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
     @Override
     public boolean equals(Object o) {

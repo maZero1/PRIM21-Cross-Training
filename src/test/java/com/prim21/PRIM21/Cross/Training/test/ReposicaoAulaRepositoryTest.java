@@ -6,11 +6,11 @@ import com.prim21.PRIM21.Cross.Training.repository.ReposicaoAulaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
 
-@DataJpaTest
+@SpringBootTest
 public class ReposicaoAulaRepositoryTest {
 
     @Autowired
@@ -20,7 +20,7 @@ public class ReposicaoAulaRepositoryTest {
     public void deveSalvarReposicao() {
         ReposicaoAula r = new ReposicaoAula();
         r.setDataOriginal(new Date());
-        r.setMotivo("Faltou por doença");
+        r.setMotivo("Viagem");
 
         ReposicaoAula salvo = reposicaoRepository.save(r);
 
@@ -32,6 +32,8 @@ public class ReposicaoAulaRepositoryTest {
     public void deveAprovarReposicao() {
         ReposicaoAula r = new ReposicaoAula();
         r.setDataOriginal(new Date());
+        r.setMotivo("Consulta médica");
+
         ReposicaoAula salvo = reposicaoRepository.save(r);
 
         salvo.aprovar(new Date());
@@ -40,4 +42,3 @@ public class ReposicaoAulaRepositoryTest {
         Assertions.assertEquals(StatusReposicao.APROVADA, salvo.getStatus());
     }
 }
-
